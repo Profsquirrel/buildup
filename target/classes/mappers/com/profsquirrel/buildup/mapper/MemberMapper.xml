@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.profsquirrel.buildup.member">
+
+	<select id="chkID" parameterType="String" resultType="Int">
+		SELECT COUNT(*)
+		FROM buildup_member
+		WHERE id=#{id}
+	</select>
+	<!-- 로그인 처리 -->
+	<select id="isExistUserInfo" parameterType="String" resultType="MemberVO">
+		SELECT * 
+		FROM buildup_member 
+		WHERE id=#{id}
+	</select>
+	<!-- 유저정보 받아오기 -->
+	<select id="getUserInfo" parameterType="MemberVO" resultType="MemberVO">
+		SELECT *
+		FROM buildup_member
+		WHERE id=#{id}
+	</select>
+	<!-- 회원가입 -->
+	<insert id="addMember" parameterType="MemberVO">
+		INSERT INTO buildup_member
+		(
+			id,pw,name,email
+		)
+		VALUES
+		(
+			#{id},#{pw},#{name},#{email}
+		)
+	</insert>
+	<!-- 팀 멤버 찾아서 반환 -->
+	<select id="getTeamMember" parameterType="Int" resultType="MemberVO">
+		SELECT id,name,email,job
+		FROM buildup_member
+		WHERE teamCode=#{teamCode}
+	</select>
+	<!-- 멤버정보 수정용 -->
+	<update id="modMember" parameterType="MemberVO">
+		UPDATE buildup_member
+		SET pw=#{pw}, email=#{email}, name=#{name}
+		WHERE id=#{id}
+	</update>
+	<!-- 팀 탈퇴 -->
+	<update id="disbandMember" parameterType="String">
+		UPDATE buildup_member
+		SET teamCode=null, teamName=null, job=null
+		WHERE id=#{id}
+	</update>
+	<!-- 회원 탈퇴 -->
+	<delete id="quitMember" parameterType="MemberVO">
+		DELETE buildup_member
+		WHERE id=#{id}
+		AND pw=#{pw}
+	</delete>
+	<!-- 회원 탈퇴 시 팀 인원 감소 -->
+	<update id="quitTeam" parameterType="Int">
+		UPDATE buildup_team
+		SET memberCnt = memberCnt-1
+		WHERE teamCode=#{teamCode}
+	</update>
+</mapper>

@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap');
+
+body{
+  font-family: 'Noto Serif KR', serif;
+  margin-left:5px;
+  max-height:100px;
+}
+
+nav{
+  position:relative;
+  z-index:2;
+  padding:10px;
+  background-color: antiquewhite;
+  max-height:35px;
+}
+
+nav>div{
+  display:inline-block;
+  vertical-align: top;
+}
+
+a{
+  text-decoration: none;
+  color:black;
+}
+
+.icon{
+  padding:10px;
+  margin-right:20px;
+  font-weight: bold;
+}
+
+.icon_content{
+  position:relative;
+  bottom:3px;
+  font-size:20px;
+}
+
+ul>li{
+  display:inline-block;
+  margin-top:10px;
+  margin-left:10px;
+}
+
+.dropdown_content{
+  display:block;
+}
+
+.dropdown_content>li{
+  display:none;
+  position:relative;
+  left:130px;
+  top:10px;
+  padding:10px;
+  border-bottom: 1px solid;
+  width:90px;
+}
+
+.nav_memberInfo{
+  position:absolute;
+  right:15px;
+  top:20px;
+}
+
+.member_dropdown_content{
+  display:block;
+}
+
+.member_dropdown_content>li{
+  position:relative;
+  left:15px;
+  display:none;
+  padding:10px;
+  border-bottom: 1px solid;
+  top:10px;
+  width:110px;
+}

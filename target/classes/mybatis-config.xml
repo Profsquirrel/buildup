@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+          <typeAlias alias="MemberVO" type="com.profsquirrel.buildup.member.vo.MemberVO" />
+          <typeAlias alias="BoardVO" type="com.profsquirrel.buildup.board.vo.BoardVO" />
+          <typeAlias alias="ReplyVO" type="com.profsquirrel.buildup.board.vo.ReplyVO" />
+          <typeAlias alias="TeamVO" type="com.profsquirrel.buildup.team.vo.TeamVO" />
+          <typeAlias alias="RecommendVO" type="com.profsquirrel.buildup.board.vo.RecommendVO" />
+    </typeAliases>
+</configuration>

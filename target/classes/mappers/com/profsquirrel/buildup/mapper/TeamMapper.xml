@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.profsquirrel.buildup.team">
+	<select id="isExistLeader" parameterType="String" resultType="Int">
+		SELECT count(*)
+		FROM buildup_team
+		WHERE teamLeader=#{teamLeader}
+	</select>
+	
+	<select id="teamCodeGenerator" parameterType="Int" resultType="Int">
+		SELECT MAX(teamCode)+1
+		FROM buildup_team
+	</select>
+	
+	<select id="isExistTeamCode" parameterType="Int" resultType="Int">
+		SELECT COUNT(*)
+		FROM buildup_team
+		WHERE teamCode=#{teamCode}
+	</select>
+	
+	<select id="selectTeam" parameterType="Int" resultType="TeamVO">
+		SELECT teamName,teamCode,teamGoal,memberCnt,teamLeader
+		FROM buildup_team
+		WHERE teamCode=#{teamCode}
+	</select>
+	
+	<insert id="addTeam" parameterType="TeamVO">
+		INSERT INTO buildup_team
+		(
+			teamName,teamCode,teamGoal,memberCnt,teamLeader
+		)
+		VALUES
+		(
+			#{teamName},#{teamCode},#{teamGoal},#{memberCnt},#{teamLeader}
+		)
+	</insert>
+	
+	<update id="insertMember" parameterType="Map">
+		UPDATE buildup_member
+		SET teamCode = #{teamCode}, teamName = #{teamName}, job=#{job}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="increaseMemberCnt" parameterType="Int">
+		UPDATE buildup_team
+		SET memberCnt=memberCnt+1
+		WHERE teamCode=#{teamCode}
+	</update>
+	
+	<update id="decreaseMemberCnt" parameterType="Map">
+		UPDATE buildup_team
+		SET memberCnt=memberCnt-1
+		WHERE teamCode=#{teamCode}
+	</update>
+	
+	<update id="switchLeader" parameterType="Map">
+		UPDATE buildup_member
+		SET job=
+		CASE id
+		WHEN #{id} then 'leader'
+		ELSE 'member'
+		END
+		WHERE teamCode=#{teamCode}
+	</update>
+	
+	<update id="switchLeaderOnTeam" parameterType="Map">
+		UPDATE buildup_team
+		SET teamLeader=#{id}
+		WHERE teamCode=#{teamCode}
+	</update>
+	
+	<update id="quitTeam" parameterType="Map">
+		UPDATE buildup_member
+		SET teamCode=null,teamName=null,job=null
+		WHERE id=#{id}
+		AND teamCode=#{teamCode}
+	</update>
+	
+	<update id="modTeam" parameterType="TeamVO">
+		UPDATE buildup_team
+		SET teamName=#{teamName},
+			teamGoal=#{teamGoal}
+		WHERE teamCode=#{teamCode}
+	</update>
+	
+	<delete id="disband" parameterType="TeamVO">
+		<![CDATA[
+		DELETE buildup_team
+		WHERE teamCode=#{teamCode}
+		AND memberCnt<2
+		]]>
+	</delete>
+</mapper>

@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap');
+
+body{
+  font-family: 'Noto Serif KR', serif;
+}
+
+.board_title{
+  margin-bottom:50px;
+  font-weight:bold;
+  font-size:30px;
+}
+
+.board_wrapper{
+  text-align: center;
+  margin-top:50px;
+  height:500px;
+  width:100%;
+}
+
+.board_wrapper>table{
+  margin:auto;
+  vertical-align: baseline;
+  border-collapse: collapse;
+  width:900px;
+}
+
+tbody tr:nth-child(2n-1){
+  background-color: antiquewhite;
+}
+
+#post_No,#post_title,#post_name,#post_writeDate,#post_views,#post_recommend,#post_emptyList{
+	padding:10px;
+	border:1px solid;
+}
+
+#post_title{
+  width:400px;
+}
+
+#post_emptyList{
+  padding:10px;
+}
+
+.cntReply{
+  margin-left:5px;
+}
+
+a{
+  text-decoration: none;
+  color:black;
+}
+
+button{
+  padding:3px 5px;
+}
+
+.btn_group{
+  margin-top:10px;
+}
+
+.btn_group #btn_list, #frm_search, #btn_search{
+  display:inline-block;
+}
+
+.btn_group>span{
+  position:relative;
+  top:1px;
+  margin-right:8px;
+}
+
+#frm_search>select{
+  padding:1px;
+}
+
+.btn_search{
+  padding:0;
+  width:30px;
+  position:relative;
+  top:1px;
+}
+
+#btn_list{
+  position:relative;
+  right:260px;
+}
+
+#btn_write{
+  position:relative;
+  left:260px;
+}

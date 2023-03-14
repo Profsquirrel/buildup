@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Serif+KR&display=swap');
+
+body {
+  font-family: 'Noto Serif KR', serif;
+  background-image: url(../images/login-background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+.wrapper {
+  text-align: center;
+  position: relative;
+  bottom: 40px;
+  font-size: 23px;
+}
+
+.container {
+  text-align: center;
+  background-color: white;
+  padding: 110px 80px;
+  border-radius: 10px;
+  opacity: 0.95;
+}
+
+#title {
+  font-family: 'Black Han Sans', sans-serif;
+  margin-top: 0;
+  animation: fadein 5s;
+}
+
+#content {
+  animation: fadein 5s;
+  font-size: 18px;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+label {
+  font-size: 15px;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+
+.login_btn>input {
+  position: relative;
+  top: 20px;
+  margin-left: 15px;
+  padding: 10px 20px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.textForm {
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.textForm>div{
+  position:relative;
+  bottom:15px;
+  margin-top:25px;
+}
+
+.pwForm{
+  right:7px;
+}
+
+.nameForm{
+  left:7px;
+}
+
+.emailForm{
+  left:7px;
+}
+
+.blabla {
+  padding-top: 20px;
+  border-top: 1px double;
+  position: relative;
+  top: 70px;
+}
+
+.blabla>p {
+  position: relative;
+  top: 10px;
+}

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.profsquirrel.buildup.board">
+
+
+	<!-- 전체 글 목록(메인페이지용) 가져오는 쿼리 -->
+	<select id="selectAllPostList" parameterType="Int" resultType="BoardVO">
+		SELECT
+		(SELECT COUNT(*) FROM buildup_reply WHERE buildup_reply.parentNo=buildup_board.postNo) AS cntReply,
+		postNo,parentNo,category,title,name,views,recommend,writeDate FROM buildup_board WHERE teamCode=#{teamCode} ORDER BY postNo DESC
+	</select>
+	<!-- 카테고리별 글 가져오는 쿼리 -->
+	<select id="selectCategoryList" parameterType="BoardVO" resultType="BoardVO">
+	<![CDATA[
+		SELECT rNum, postNo, parentNo, name, title, views, recommend, teamCode, writeDate, category, cntReply
+		FROM (
+			SELECT ROWNUM AS rNum, postNo, parentNo, name, title, views, recommend, teamCode, writeDate, category, cntReply
+			FROM (
+				SELECT postNo, parentNo, name, title, views, recommend, teamCode, writeDate, category,
+					(
+						SELECT COUNT(*) FROM buildup_reply WHERE buildup_reply.parentNo = buildup_board.postNo
+					)
+				AS cntReply
+				FROM buildup_board
+				WHERE teamCode = #{teamCode}
+				AND category = #{category}
+				ORDER BY postNo desc
+				)
+			)
+		WHERE rNum BETWEEN #{startPost} AND #{endPost}
+	]]>
+	</select>
+	<!-- 게시글 검색 쿼리 -->
+	<select id="searchPost" parameterType="BoardVO" resultType="BoardVO">
+		SELECT rNum, postNo, parentNo, name, title, views, recommend, teamCode, writeDate, category, cntReply
+		FROM (
+			SELECT ROWNUM AS rNum, postNo, parentNo, name, title, views, recommend, teamCode, writeDate, category, cntReply
+			FROM (
+				SELECT postNo, parentNo, name, title, views, recommend, teamCode, writeDate, category,
+					(
+						SELECT COUNT(*) FROM buildup_reply WHERE buildup_reply.parentNo = buildup_board.postNo
+					)
+				AS cntReply
+				FROM buildup_board
+				WHERE teamCode = #{teamCode}
+				AND category = #{category}
+				AND ${searchType} like '%'||#{keyword}||'%'
+				ORDER BY postNo desc
+				)
+			)
+		WHERE rNum BETWEEN #{startPost} AND #{endPost}
+	</select>
+	<!-- 글 전체 갯수 반환 쿼리 -->
+	<select id="returnNumberOfPosts" parameterType="Map" resultType="Int">
+		SELECT COUNT(*)
+		FROM buildup_board
+		WHERE teamCode=#{teamCode}
+		AND category=#{category}
+	</select>
+	<select id="searchNumberOfPosts" parameterType="Map" resultType="Int">
+		SELECT COUNT(*)
+		FROM buildup_board
+		WHERE teamCode=#{teamCode}
+		AND category=#{category}
+		AND ${searchType} like '%'||#{keyword}||'%'
+	</select>
+	<!-- 글 상세보기 쿼리 -->
+	<select id="selectPost" parameterType="BoardVO" resultType="BoardVO">
+		SELECT postNo, title, name, writeDate, content, id, category
+		FROM buildup_board
+		WHERE teamCode=#{teamCode}
+		AND postNo=#{postNo}
+		ORDER BY postNo
+	</select>
+	<!-- 해당 글 번호에 맞는 댓글 가져오는 쿼리 -->
+	<select id="selectReply" parameterType="Int" resultType="ReplyVO">
+		SELECT replyNo, parentNo, name, content, writeDate, id
+		FROM buildup_reply
+		WHERE parentNo=#{postNo}
+		ORDER BY replyNo DESC
+	</select>
+	<!-- 최신 글번호 반환 쿼리 -->
+	<select id="getPostNo" resultType="Integer">
+		SELECT MAX(postNo)
+		FROM buildup_board
+	</select>
+	<!-- 최신 댓글번호 반환 쿼리 -->
+	<select id="getReplyNo" resultType="Integer">
+		SELECT MAX(replyNo)
+		FROM buildup_reply
+	</select>
+	<!-- 글 작성 쿼리 -->
+	<insert id="writePost" parameterType="BoardVO">
+		INSERT INTO buildup_board
+		(
+			postNo,parentNo,name,title,content,views,recommend,teamCode,category,fileName,id
+		)
+		VALUES
+		(
+			#{postNo},#{parentNo},#{name},#{title},#{content},#{views},#{recommend},#{teamCode},#{category},#{fileName},#{id}
+		)
+	</insert>
+	<!-- 댓글 작성 쿼리 -->
+	<insert id="writeReply" parameterType="ReplyVO">
+		INSERT INTO buildup_reply
+		(
+			replyNo, parentNo, name, content, id
+		)
+		VALUES
+		(
+			#{replyNo},#{parentNo},#{name},#{content}, #{id}
+		)
+	</insert>
+	<update id="modifyPost" parameterType="BoardVO">
+		UPDATE buildup_board
+		SET title = #{title}, content = #{content}, category = #{category}
+		WHERE postNo=#{postNo}
+		AND teamCode=#{teamCode}
+	</update>
+	<!-- 조회수 증가 쿼리 -->
+	<update id="incViews" parameterType="Int">
+		UPDATE buildup_board 
+		SET views = views+1
+		WHERE postNo=#{postNo}
+	</update>
+	<!-- board 추천수 증가 쿼리 -->
+	<update id="incRecommend" parameterType="Int">
+		UPDATE buildup_board
+		SET recommend=recommend+1
+		WHERE postNo=#{postNo}
+	</update>
+	<!-- recommend 데이터베이스에 추천인 ID/글번호 적어서 넣기 -->
+	<insert id="id_chkRecommend" parameterType="RecommendVO">
+		INSERT INTO buildup_recommend
+		(
+			id,postNo
+		)
+		VALUES
+		(
+			#{id},#{postNo}
+		)
+	</insert>
+	<!-- recommend 데이터베이스에 중복추천 확인 쿼리 -->
+	<select id="chkRecommend" parameterType="RecommendVO" resultType="Int">
+		SELECT count(*)
+		FROM buildup_recommend
+		WHERE id=#{id} AND postNo=#{postNo}
+	</select>
+	<!-- 글삭 -->
+	<delete id="deletePost" parameterType="Int">
+		DELETE FROM buildup_board
+		WHERE postNo=#{postNo}
+	</delete>
+	<!-- 댓삭 -->
+	<delete id="removeReply" parameterType="ReplyVO">
+		DELETE FROM buildup_reply
+		WHERE replyNo=#{replyNo}
+	</delete>
+</mapper>

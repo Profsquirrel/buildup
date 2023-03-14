@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap');
+
+body{
+  font-family: 'Noto Serif KR', serif;
+}
+
+a{
+  text-decoration: none;
+  color:black;
+}
+
+.container{
+  margin-top:20px;
+  text-align: center;
+}
+
+.greeting{
+  height:100px;
+  width:100%;
+  text-align:center;
+  font-weight: bold;
+  font-size:30px;
+}
+
+.greeting>h1{
+  margin-top:10px;
+}
+
+.bbsposi{
+	height:450px;
+}
+
+.bbs_top>div{
+  display:inline-block;
+  vertical-align:top;
+}
+
+.bbs_top>.assignment{
+  margin-left:50px;
+}
+
+.bbs_bottom{
+	margin-top:-30px;
+}
+
+.bbs_bottom>.free{
+  margin-left:50px;
+}
+
+.bbs_bottom>div{
+  display:inline-block;
+  vertical-align:top;
+}
+
+.mainbbs{
+  margin-top:30px;
+  height:400px;
+  width:400px;
+}
+
+.bbsLink{
+  height:40px;
+  border-radius: 5px;
+  background-color: beige;
+}
+
+.bbsLink>a>p{
+  position:relative;
+  top:10px;
+  display:inline;
+  font-size:18px;
+}
+
+.memberInfo p{
+  display:inline;
+}
+
+.title{
+  position: relative;
+  top:10px;
+  height:30px;
+}
+
+#teamName{
+  font-size:30px;
+}
+
+#teamGoal{
+  margin-top:20px;
+  font-size:20px;
+}
+
+.contentList{
+	margin-top:10px;
+}
